@@ -7,18 +7,8 @@
 
 int main()
 {
-
-	// while (1)
-	// {
-	// 	DDRB = 0xFF;
-	// 	PORTB = 0x0F;
-	// 	_delay_ms(500);
-	// 	PORTB = 0xF0;
-	// 	_delay_ms(500);
-
 	led_init('B');
 	kb_init('A');
-
 
 	while(1){
 
