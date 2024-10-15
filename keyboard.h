@@ -1,5 +1,5 @@
-#ifndef KEYBOARD_H
-#define KEYBOARD_h
+#ifndef KEYBOARD1_H
+#define KEYBOARD1_H
 
 #include <avr/io.h>
 #include <util/delay.h>

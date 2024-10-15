@@ -60,119 +60,41 @@ void kb_init(char kb_port)
 
 unsigned char get_key(char kb_size)
 {
+    unsigned char out = 0x00;
     //sprawdzenie wierszy
-    *DDR = 0xF0;
-    *PORT = 0x0F;
-    char kb1 = *PIN;
+    *DDR = 0x0f;
+    *PORT = 0xF0;
+    char cols = *PIN;
     //jeżeli wiersz jest wciśnięty
-    if (kb1 != 0x0F)
-    {
+    // if (rows != 0x0F)
+    // {
         // sprawdzenie kolumn
-        *DDR = 0x0F;
-        *PORT = 0xF0;
-        char kb2 = *PIN;
-
-        //wyzerowanie zmiennej przechowującej stan klawiszy
-        char out = 0x00;
-        //ustawienie stanu wierszy i kolumn w zmiennej wyjściowej
-        out |= kb1;
-        out |= kb2;
-        if (kb_size == 'M' || kb_size == 'm')   //jeżeli klawiatura mała
-        {
-            //przypisanie odpowiednich wartości danemu klawiszowi
-            switch (out)
-            {
-            case 0b11101110:
-                out = '1';
+        *DDR = 0xf0;
+        *PORT = 0x0f;
+        char rows = *PIN;
+        int row =-1;
+        int col=-1;
+        int i;
+        for( i = 0; i<4; i++){
+            if(!(rows & (1 << i))){
+                for(int j = 4; j<8; j++){
+                    if(!(cols & (1 << (j)))){
+                        row = i;
+                        col = j;
+                        break;
+                    }
+                }
                 break;
-
-            case 0b11101101:
-                out = '4';
-                break;
-
-            case 0b11101011:
-                out = '7';
-                break;
-
-            case 0b11100111:
-                out = '/';
-                break;
-            default:
-                out = 0x00;
             }
         }
-        else if(kb_size == 'W' || kb_size == 'w')//jeżeli klawiatura duża
-        {
-            //przypisanie odpowiednich wartości danemu klawiszowi
-            switch (out)
-            {
-            case 0b11101110:
-                out = '1';
-                break;
 
-            case 0b11011110:
-                out = '2';
-                break;
 
-            case 0b10111110:
-                out = '3';
-                break;
+    if(row != -1 && col !=-1)
+    {
 
-            case 0b01111110:
-                out = '+';
-                break;
-            case 0b11101101:
-                out = '4';
-                break;
-
-            case 0b11011101:
-                out = '5';
-                break;
-
-            case 0b10111101:
-                out = '6';
-                break;
-
-            case 0b01111101:
-                out = '-';
-                break;
-
-            case 0b11101011:
-                out = '7';
-                break;
-
-            case 0b11011011:
-                out = '8';
-                break;
-
-            case 0b10111011:
-                out = '9';
-                break;
-
-            case 0b01111011:
-                out = '*';
-                break;
-
-            case 0b11100111:
-                out = '/';
-                break;
-
-            case 0b11010111:
-                out = '0';
-                break;
-
-            case 0b10110111:
-                out = '=';
-                break;
-
-            case 0b01110111:
-                out = '.';
-                break;
-            default:
-                out = 0x00;
-            }
-        }
-        // wyświetlenie stanu kalwiatury na tablicy ledów
-        led_set(out);
+    out |= _BV(row);
+    out |= _BV(col);
     }
+    // }
+    return out;
 }
