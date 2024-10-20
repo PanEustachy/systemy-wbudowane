@@ -1,8 +1,7 @@
 #ifndef KEYBOARD1_H
 #define KEYBOARD1_H
 
-#include <avr/io.h>
-#include <util/delay.h>
+
 
 char* DDR;
 char* PORT;
